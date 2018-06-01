@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - new
-  - 
+  - newer
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: new
+    uniqueID: 1856691083
+    locked: 0
+  - name: newer
+    uniqueID: 2169545941
     locked: 0

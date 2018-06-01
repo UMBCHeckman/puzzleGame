@@ -300,7 +300,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\drag.cs" />
+    <Compile Include="Assets\mouseDrag.cs" />
     <Compile Include="Assets\scramble.cs" />
+    <Compile Include="Assets\trigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\kithe\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Styles\Main_Dark.uss" />

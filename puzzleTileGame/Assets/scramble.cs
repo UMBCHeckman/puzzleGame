@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class scramble : MonoBehaviour
 {
@@ -20,9 +22,23 @@ public class scramble : MonoBehaviour
     private static System.Random rng = new System.Random();
     int[] list = new int[24];
     int value;
+    bool lclick;
+    bool rclick;
+    float inputLC;
+    float inputRC;
+    public GameObject canvas2;
+    private Vector3 point;
+    private GameObject cursorObject;
+    private Ray ray;
+    private GameObject fullImage;
+    bool drag1;
+    bool drag2;
+    private GameObject currentTile;
     // Use this for initialization
     void Start()
     {
+        cursorObject = GameObject.Find("pointer");
+        fullImage = GameObject.Find("GameObjectFull");
         tile0 = GameObject.Find("GameObject");
         tile1 = GameObject.Find("GameObject (1)");
         tile2 = GameObject.Find("GameObject (2)");
@@ -84,12 +100,6 @@ public class scramble : MonoBehaviour
         }
         for (int i = 0; i < 24; i++)
             print(list[i]);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //tile1.transform.position = new Vector3(0.0f, 1.5f, 0.0f);
         tile0.transform.position = locations[list[0]];
         tile1.transform.position = locations[list[1]];
         tile2.transform.position = locations[list[2]];
@@ -114,5 +124,74 @@ public class scramble : MonoBehaviour
         tile21.transform.position = locations[list[21]];
         tile22.transform.position = locations[list[22]];
         tile23.transform.position = locations[list[23]];
+        lclick = false;
+        rclick = false;
+        canvas2 = GameObject.Find("Canvas2");
+        print(tile0.transform.position);
     }
-}
+
+    // Update is called once per frame
+    void Update()
+    {
+        //tile1.transform.position = new Vector3(0.0f, 1.5f, 0.0f);
+        if (inputRC == 0)
+        {
+            inputRC = Input.GetAxis("rclick");
+            if (inputRC != 0)
+            {
+                rclick = !rclick;
+            }
+        }
+        if (Input.GetAxis("rclick") == 0)
+        {
+            inputRC = 0;
+        }
+        if (rclick)
+        {
+            print("bargingo");
+            Color myColor = fullImage.GetComponent<Image>().color;
+            Graphic myGraphic = fullImage.GetComponent<Image>();
+            fullImage.GetComponent<Image>().color = new Color(myColor.r, myColor.g, myColor.b, 1);
+            canvas2.SetActive(false);
+        }
+        else
+        {
+            Color myColor = fullImage.GetComponent<Image>().color;
+            Graphic myGraphic = fullImage.GetComponent<Image>();
+            fullImage.GetComponent<Image>().color = new Color(myColor.r, myColor.g, myColor.b, 0);
+            canvas2.SetActive(true);
+            //print("no");
+            if (inputLC == 0)
+            {
+                inputLC = Input.GetAxis("lclick");
+                if (inputLC != 0)
+                {
+                    lclick = !lclick;
+                }
+            }
+            if (Input.GetAxis("lclick") == 0)
+            {
+                inputLC = 0;
+            }
+            if (lclick)
+            {
+                cursorObject.SetActive(true);
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                point = ray.origin + (ray.direction * 1f);
+                //Debug.Log( "World point " + point );
+                cursorObject.transform.position = point;
+                //print("f");
+                currentTile = cursorObject.GetComponent<trigger>().obj1;
+                currentTile.transform.position = point;
+                currentTile.GetComponent<RectTransform>().SetAsLastSibling();
+            }
+            else
+            {
+                cursorObject.GetComponent<trigger>().obj1 = cursorObject;
+                cursorObject.GetComponent<trigger>().obj1Bool = false;
+                cursorObject.SetActive(false);
+                //print("no");
+            }
+        }
+    }
+ }
