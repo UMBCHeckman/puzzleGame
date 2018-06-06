@@ -14,16 +14,26 @@ public class trigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        /*
         if(obj1Bool)
-            print(obj1);
+            print("obj1: "+ obj1);
+        if (obj2Bool)
+            print("obj2: "+ obj2);
+            */
 	}
     void OnTriggerStay2D(Collider2D col)
     {
-        print(col);
+        //print(col);
         if (!obj1Bool)
         {
             obj1 = GameObject.Find(col.name);
             obj1Bool = true;
+        }
+        else
+        {
+            if (GameObject.Find(col.name) != obj1)
+                obj2 = GameObject.Find(col.name);
+            obj2Bool = true;
         }
     }
 }
